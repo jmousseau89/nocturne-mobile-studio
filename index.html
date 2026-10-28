@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#111315"><title>NOCTURNE — Mobile Studio</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brandmark">N</span><div><b>NOCTURNE</b><small>MOBILE STUDIO</small></div></div>
+  <div class="top-actions"><button id="saveBtn" class="ghost">SAVE</button><button id="exportBtn" class="accent">EXPORT WAV</button></div>
+</header>
+<main>
+  <section class="transport panel">
+    <button id="playBtn" class="play" aria-label="Play">▶</button>
+    <div class="transport-info"><div class="eyebrow">SESSION <span id="sessionState">READY</span></div><div class="clock" id="clock">00:00.0</div></div>
+    <div class="tempo"><label for="tempo">BPM</label><input id="tempo" type="number" min="50" max="200" value="110"><span>4/4</span></div>
+    <button id="clearBtn" class="ghost">CLEAR</button>
+  </section>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="arrange">01 / ARRANGE</button><button class="tab" data-tab="beats">02 / BEATS</button>
+    <button class="tab" data-tab="record">02 / RECORD</button>
+    <button class="tab" data-tab="mix">03 / MIX</button>
+  </nav>
+
+  <section id="arrange" class="view active">
+    <div class="section-heading"><div><div class="eyebrow">SONG BUILDER</div><h1>Arrangement</h1></div><button id="addTrack" class="ghost">＋ TRACK</button></div>
+    <div class="arrange-tools panel"><span class="eyebrow">8-BAR TIMELINE</span><button id="addClip" class="accent">＋ ADD CLIP</button></div>
+    <div class="timeline panel"><div class="timeline-head"><div>TRACKS</div><div class="ruler" id="ruler"></div></div><div id="trackList"></div></div>
+    <div class="hint">Add tracks and clips to sketch your song arrangement. This timeline is an editable planning surface; synchronized multitrack clip playback is a later milestone.</div>
+    <div class="project-summary panel"><div><b id="trackCount">4</b><span>TRACKS</span></div><div><b id="clipCount">6</b><span>CLIPS</span></div></div>
+  </section>
+  <section id="beats" class="view">
+    <div class="section-heading"><div><div class="eyebrow">PATTERN EDITOR</div><h1>Drum sequencer</h1></div><button id="randomBtn" class="ghost">GENERATE</button></div>
+    <div class="pattern-controls panel">
+      <label>KIT <select id="kit"><option value="electro">ELECTRO</option><option value="acoustic">ACOUSTIC</option><option value="industrial">INDUSTRIAL</option></select></label>
+      <label>SWING <input id="swing" type="range" min="0" max="45" value="0"></label>
+      <button id="metronomeBtn" class="ghost">METRONOME OFF</button>
+    </div>
+    <div id="sequencer" class="sequencer panel"></div>
+    <div class="hint">Tap cells to program a 16-step loop. Press play to hear it. Audio starts after your first tap, as required by iPhone Safari.</div>
+    <div class="section-heading compact"><div><div class="eyebrow">QUICK INSTRUMENT</div><h2>Touch synth</h2></div><span class="live-indicator">● AUDIO READY</span></div>
+    <div class="synth panel">
+      <div class="synth-top"><label>WAVEFORM <select id="wave"><option>sawtooth</option><option>sine</option><option>square</option><option>triangle</option></select></label><label>OCTAVE <select id="octave"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></label><label>FILTER <input id="filter" type="range" min="300" max="8000" value="2800"></label></div>
+      <div id="keys" class="keys"></div>
+    </div>
+  </section>
+
+  <section id="record" class="view">
+    <div class="section-heading"><div><div class="eyebrow">AUDIO INPUT</div><h1>Record a take</h1></div><span class="live-indicator">● MIC</span></div>
+    <div class="record-card panel">
+      <div class="record-visual"><div class="record-ring"><div class="record-dot" id="recordDot"></div></div><div><div class="eyebrow" id="recordStatus">READY TO RECORD</div><div class="record-time" id="recordTime">00:00.0</div></div></div>
+      <p>Record vocals, guitar, or any sound into a take. Keep this page open while recording. Microphone permission and HTTPS are required.</p>
+      <div class="record-actions"><button id="recordBtn" class="record-button">● START RECORDING</button><button id="stopRecordBtn" class="ghost" disabled>STOP</button></div>
+      <audio id="takeAudio" controls></audio>
+      <button id="downloadTake" class="ghost full" disabled>DOWNLOAD RECORDING</button>
+    </div>
+    <div class="section-heading compact"><div><div class="eyebrow">SESSION NOTES</div><h2>Arrangement lanes</h2></div></div>
+    <div id="lanes" class="lanes panel"></div>
+    <div class="hint">This first prototype records and plays back one microphone take. The next development stage can add multi-track clips and synchronized arrangement editing.</div>
+  </section>
+
+  <section id="mix" class="view">
+    <div class="section-heading"><div><div class="eyebrow">OUTPUT BUS</div><h1>Mix & master</h1></div></div>
+    <div class="mixer panel">
+      <div class="channel"><div class="channel-name">DRUMS</div><div class="meter"><span id="drumMeter"></span></div><input id="drumVol" type="range" min="0" max="100" value="75"><b id="drumVolVal">75%</b></div>
+      <div class="channel"><div class="channel-name">SYNTH</div><div class="meter"><span id="synthMeter"></span></div><input id="synthVol" type="range" min="0" max="100" value="65"><b id="synthVolVal">65%</b></div>
+      <div class="channel"><div class="channel-name">MASTER</div><div class="meter"><span id="masterMeter"></span></div><input id="masterVol" type="range" min="0" max="100" value="85"><b id="masterVolVal">85%</b></div>
+    </div>
+    <div class="panel effect-panel"><div><div class="eyebrow">MASTER EFFECT</div><h2>Room reverb</h2><p>Add a subtle space to the synth and drum bus.</p></div><label class="toggle"><input id="reverb" type="checkbox"><span></span></label><label class="wide-label">WET MIX <input id="wet" type="range" min="0" max="60" value="18"></label></div>
+    <div class="panel export-panel"><div class="eyebrow">PROJECT TOOLS</div><h2>Save your session</h2><p>Save the pattern and settings locally on this device, or export a WAV loop.</p><div class="export-actions"><button id="saveBtn2" class="accent">SAVE SESSION</button><button id="exportBtn2" class="ghost">EXPORT WAV LOOP</button></div><div id="toast" role="status"></div></div>
+  </section>
+</main>
+<footer>NOCTURNE STUDIO <span>PROTOTYPE 0.1 · AUDIO ENGINE</span></footer>
+<script src="app.js"></script>
+</body></html>
